@@ -30,7 +30,10 @@ class BackgammonEnv(gym.Env):
             high[i] = 6.0
         high[194] = 7.5
 
-        self.observation_space = Box(low=low, high=high)
+        state_space = Box(low=low, high=high)
+
+        self.observation_space = state_space
+        self.action_space = state_space 
         self.counter = 0
         self.max_length_episode = 10000
         self.viewer = None
