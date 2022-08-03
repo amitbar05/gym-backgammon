@@ -29,16 +29,17 @@ def make_plays():
 
     agents = {WHITE: RandomAgent(WHITE), BLACK: RandomAgent(BLACK)}
 
-    agent_color, first_roll, observation = env.reset()
+    observation, game_info = env.reset(return_info=True)
+    first_roll = game_info["roll"]
 
-    agent = agents[agent_color]
+    agent = agents[game_info["agent_color"]]
 
     t = time.time()
 
     env.render(mode='human')
 
     for i in count():
-        if first_roll:
+        if first_roll is not None:
             roll = first_roll
             first_roll = None
         else:
@@ -54,7 +55,8 @@ def make_plays():
 
         action = agent.choose_best_action(actions, env)
 
-        observation_next, reward, done, winner = env.step(action)
+        observation_next, reward, done, info = env.step(action)
+        winner = info["winner"]
 
         env.render(mode='human')
 

@@ -55,7 +55,7 @@ class BackgammonEnv(gym.Env):
 
         self.counter += 1
 
-        return self._get_obs(), reward, done, winner
+        return self._get_obs(), reward, done, {"winner": winner}
 
     def _get_obs(self):
         '''
@@ -67,7 +67,7 @@ class BackgammonEnv(gym.Env):
 
 
     def _get_info(self):
-        return self.current_agent, self.roll, self.game.get_board_features(self.current_agent)
+        return {"agent_color": self.current_agent, "roll": self.roll}
 
 
     def reset(self, seed=None, return_info=False, options=None):
