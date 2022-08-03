@@ -67,7 +67,7 @@ class BackgammonEnv(gym.Env):
 
 
     def _get_info(self):
-        return self.current_agent, roll, self.game.get_board_features(self.current_agent)
+        return self.current_agent, self.roll, self.game.get_board_features(self.current_agent)
 
 
     def reset(self, seed=None, return_info=False, options=None):
@@ -88,7 +88,7 @@ class BackgammonEnv(gym.Env):
         # set the current agent
         if self.roll[0] > self.roll[1]:
             self.current_agent = WHITE
-            self.roll = (-roll[0], -roll[1])
+            self.roll = -self.roll
         else:
             self.current_agent = BLACK
 
