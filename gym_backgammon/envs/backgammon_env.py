@@ -74,21 +74,21 @@ class BackgammonEnv(gym.Env):
         # We need the following line to seed self.np_random
         super().reset(seed=seed)
         
-        # function which returns a random integer at a range [start, end]
-        def random_int(start, end):
-            return self.np_random.randint(start,end + 1)
+        # returns a two random integers at a range [start, end]
+        def double_dice(start, end):
+            return self.np_random.integers(start,end + 1, size=2)
 
         # roll the dice
-        roll = random_int(1, 6), random_int(1, 6)
+        self.roll = double_dice(1, 6)
 
         # roll the dice until they are different
-        while roll[0] == roll[1]:
-            roll = random_int(1, 6), random_int(1, 6)
+        while self.roll[0] == self.roll[1]:
+            self.roll = double_dice(1, 6)
 
         # set the current agent
-        if roll[0] > roll[1]:
+        if self.roll[0] > self.roll[1]:
             self.current_agent = WHITE
-            roll = (-roll[0], -roll[1])
+            self.roll = (-roll[0], -roll[1])
         else:
             self.current_agent = BLACK
 
