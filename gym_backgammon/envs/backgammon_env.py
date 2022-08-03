@@ -13,9 +13,12 @@ SCREEN_H = 500
 
 
 class BackgammonEnv(gym.Env):
-    metadata = {'render.modes': ['human', 'rgb_array', 'state_pixels']}
+    metadata = {'render_modes': ['human', 'rgb_array', 'state_pixels']}
 
-    def __init__(self):
+    def __init__(self, render_mode=None):
+        assert render_mode is None or render_mode in self.metadata["render_modes"]
+        self.render_mode = render_mode
+        
         self.game = Game()
         self.current_agent = None
 
