@@ -60,8 +60,11 @@ class BackgammonEnv(gym.Env):
 
         return self.observation, reward, done, winner
 
-     def _get_obs(self):
+    def _get_obs(self):
         return self.observation
+
+    def _get_info(self):
+        return "Number of steps taken:" + self.counter
 
 
     def reset(self, seed=None):
