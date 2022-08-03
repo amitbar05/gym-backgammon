@@ -18,7 +18,7 @@ class BackgammonEnv(gym.Env):
     def __init__(self, render_mode=None):
         assert render_mode is None or render_mode in self.metadata["render_modes"]
         self.render_mode = render_mode
-        
+
         self.game = Game()
         self.current_agent = None
 
@@ -43,6 +43,9 @@ class BackgammonEnv(gym.Env):
 
     def step(self, action):
         self.game.execute_play(self.current_agent, action)
+        
+        # get the board representation from the opponent player perspective (the current player has already performed the move)
+        observation = self._get_obs()
 
         reward = 0
         done = False
@@ -58,14 +61,10 @@ class BackgammonEnv(gym.Env):
 
         self.counter += 1
 
-        return self._get_obs(), reward, done, {"winner": winner}
+        return observation, reward, done, {"winner": winner}
 
     def _get_obs(self):
-        '''
-        in case this called after a step,
-        returns the board representation from the opponent player perspective (the current player has already performed the move)
-        otherwise returns the current representation of the board.
-        '''
+        # returns the current representation of the board.
         self.game.get_board_features(self.game.get_opponent(self.current_agent))
 
 
