@@ -60,13 +60,20 @@ class BackgammonEnv(gym.Env):
 
         return observation, reward, done, winner
 
-    def reset(self):
+    def reset(self, seed=None):
+        # We need the following line to seed self.np_random
+        super().reset(seed=seed)
+        
+        # function which returns a random integer at a range [start, end]
+        def random_int(start, end):
+            return self.np_random.randint(start,end + 1)
+
         # roll the dice
-        roll = randint(1, 6), randint(1, 6)
+        roll = random_int(1, 6), random_int(1, 6)
 
         # roll the dice until they are different
         while roll[0] == roll[1]:
-            roll = randint(1, 6), randint(1, 6)
+            roll = random_int(1, 6), random_int(1, 6)
 
         # set the current agent
         if roll[0] > roll[1]:
