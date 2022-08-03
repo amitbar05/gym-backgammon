@@ -30,7 +30,7 @@ class BackgammonEnv(gym.Env):
             high[i] = 6.0
         high[194] = 7.5
 
-        state_space = Box(low=low, high=high)
+        state_space = Box(low=np.float32(low), high=np.float32(high), dtype=np.float32)
 
         self.observation_space = state_space
         self.action_space = state_space 
