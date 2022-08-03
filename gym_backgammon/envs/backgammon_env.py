@@ -59,7 +59,9 @@ class BackgammonEnv(gym.Env):
 
     def _get_obs(self):
         '''
-        get the board representation from the opponent player perspective (the current player has already performed the move)
+        in case this called after a step,
+        returns the board representation from the opponent player perspective (the current player has already performed the move)
+        otherwise returns the current representation of the board.
         '''
         self.game.get_board_features(self.game.get_opponent(self.current_agent))
 
