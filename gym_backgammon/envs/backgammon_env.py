@@ -41,9 +41,6 @@ class BackgammonEnv(gym.Env):
     def step(self, action):
         self.game.execute_play(self.current_agent, action)
 
-        # get the board representation from the opponent player perspective (the current player has already performed the move)
-        self.observation = self.game.get_board_features(self.game.get_opponent(self.current_agent))
-
         reward = 0
         done = False
 
@@ -58,16 +55,20 @@ class BackgammonEnv(gym.Env):
 
         self.counter += 1
 
-        return self.observation, reward, done, winner
+        return self._get_obs(), reward, done, winner
 
     def _get_obs(self):
-        return self.observation
+        '''
+        get the board representation from the opponent player perspective (the current player has already performed the move)
+        '''
+        self.game.get_board_features(self.game.get_opponent(self.current_agent))
+
 
     def _get_info(self):
-        return "Number of steps taken:" + self.counter
+        return self.current_agent, roll, self.game.get_board_features(self.current_agent)
 
 
-    def reset(self, seed=None):
+    def reset(self, seed=None, return_info=False, options=None):
         # We need the following line to seed self.np_random
         super().reset(seed=seed)
         
@@ -92,7 +93,10 @@ class BackgammonEnv(gym.Env):
         self.game = Game()
         self.counter = 0
 
-        return self.current_agent, roll, self.game.get_board_features(self.current_agent)
+        
+        observation = self._get_obs()
+        info = self._get_info()
+        return (observation, info) if return_info else observation
 
     def render(self, mode='human'):
         assert mode in ['human', 'rgb_array', 'state_pixels'], print(mode)
