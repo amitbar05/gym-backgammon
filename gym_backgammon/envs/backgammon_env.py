@@ -19,8 +19,8 @@ class BackgammonEnv(gym.Env):
         self.game = Game()
         self.current_agent = None
 
-        low = np.zeros((198, 1))
-        high = np.ones((198, 1))
+        low = np.zeros(198)
+        high = np.ones(198)
 
         for i in range(3, 97, 4):
             high[i] = 6.0
