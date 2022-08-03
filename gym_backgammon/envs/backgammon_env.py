@@ -42,7 +42,7 @@ class BackgammonEnv(gym.Env):
         self.game.execute_play(self.current_agent, action)
 
         # get the board representation from the opponent player perspective (the current player has already performed the move)
-        observation = self.game.get_board_features(self.game.get_opponent(self.current_agent))
+        self.observation = self.game.get_board_features(self.game.get_opponent(self.current_agent))
 
         reward = 0
         done = False
@@ -58,7 +58,11 @@ class BackgammonEnv(gym.Env):
 
         self.counter += 1
 
-        return observation, reward, done, winner
+        return self.observation, reward, done, winner
+
+     def _get_obs(self):
+        return self.observation
+
 
     def reset(self, seed=None):
         # We need the following line to seed self.np_random
