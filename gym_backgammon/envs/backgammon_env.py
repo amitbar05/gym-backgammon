@@ -1,7 +1,6 @@
 import gym
 from gym.spaces import Box
 from gym_backgammon.envs.backgammon import Backgammon as Game, WHITE, BLACK, COLORS
-from random import randint
 from gym_backgammon.envs.rendering import Viewer
 import numpy as np
 
@@ -42,6 +41,8 @@ class BackgammonEnv(gym.Env):
         self.viewer = None
 
     def step(self, action):
+
+
         self.game.execute_play(self.current_agent, action)
         
         # get the board representation from the opponent player perspective (the current player has already performed the move)
@@ -52,16 +53,27 @@ class BackgammonEnv(gym.Env):
 
         winner = self.game.get_winner()
 
-        if winner is not None or self.counter > self.max_length_episode:
+        if winner is not None:
             # practical-issues-in-temporal-difference-learning, pag.3
             # ...leading to a final reward signal z. In the simplest case, z = 1 if White wins and z = 0 if Black wins
             if winner == WHITE:
                 reward = 1
-            done = True
+            # game terminated
+            terminated, truncated = True, False
+            return observation, reward, terminated, truncated, {"winner": winner}
 
         self.counter += 1
 
-        return observation, reward, done, {"winner": winner}
+        if self.counter > self.max_length_episode:
+            # game truncated
+            terminated, truncated = False, True
+            return observation, reward, terminated, truncated, {"winner": None}
+        
+        # normal step
+        terminated, truncated = False, False
+        return observation, reward, terminated, truncated, {"winner": None}
+
+        
 
     def _get_obs(self):
         # returns the current representation of the board.

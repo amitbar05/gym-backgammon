@@ -55,14 +55,17 @@ def make_plays():
 
         action = agent.choose_best_action(actions, env)
 
-        observation_next, reward, done, info = env.step(action)
-        winner = info["winner"]
+        observation_next, reward, terminated, truncated, info = env.step(action)
+        
 
         # env.render(mode='human')
+        if truncated:
+            print("Game reached length limit, exiting game...")
+            break
 
-        if done:
-            if winner is not None:
-                wins[winner] += 1
+        if terminated:            
+            winner = info["winner"]
+            wins[winner] += 1
 
             tot = wins[WHITE] + wins[BLACK]
             tot = tot if tot > 0 else 1
@@ -72,7 +75,7 @@ def make_plays():
                 agents[BLACK].name, wins[BLACK], (wins[BLACK] / tot) * 100, time.time() - t))
 
             break
-
+        # init stuff for next step
         agent_color = env.get_opponent_agent()
         agent = agents[agent_color]
         observation = observation_next
