@@ -30,13 +30,15 @@ def make_plays():
     agents = {WHITE: RandomAgent(WHITE), BLACK: RandomAgent(BLACK)}
 
     observation, game_info = env.reset(return_info=True)
+    print("hello debug")
+    print("observation = ", observation)
     first_roll = game_info["roll"]
 
     agent = agents[game_info["agent_color"]]
 
     t = time.time()
 
-    # env.render(mode='human')
+    env.render()
 
     for i in count():
         if first_roll is not None:
@@ -58,7 +60,7 @@ def make_plays():
         observation_next, reward, terminated, truncated, info = env.step(action)
         
 
-        # env.render(mode='human')
+        env.render()
         if truncated:
             print("Game reached length limit, exiting game...")
             break

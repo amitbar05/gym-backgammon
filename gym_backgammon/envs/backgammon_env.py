@@ -114,10 +114,10 @@ class BackgammonEnv(gym.Env):
         info = self._get_info()
         return (observation, info) if return_info else observation
 
-    def render(self, mode='human'):
-        assert mode in ['human', 'rgb_array', 'state_pixels'], print(mode)
-
-        if mode == 'human':
+    def render(self):
+        if self.render_mode is None:
+            return
+        elif self.render_mode == 'human':
             self.game.render()
             return True
         else:
@@ -150,16 +150,16 @@ class BackgammonEnv(gym.Env):
 
 class BackgammonEnvPixel(BackgammonEnv):
 
-    def __init__(self, render_mode=None):
+    def __init__(self, render_mode='state_pixels'):
         super().__init__(render_mode)
         self.observation_space = Box(low=0, high=255, shape=(STATE_H, STATE_W, 3), dtype=np.uint8)
 
     def step(self, action):
         observation, reward, done, winner = super().step(action)
-        observation = self.render(mode='state_pixels')
+        observation = self.render()
         return observation, reward, done, winner
 
     def reset(self):
         current_agent, roll, observation = super().reset()
-        observation = self.render(mode='state_pixels')
+        observation = self.render()
         return current_agent, roll, observation
