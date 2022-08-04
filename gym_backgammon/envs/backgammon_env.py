@@ -40,8 +40,8 @@ class BackgammonEnv(gym.Env):
         self.max_length_episode = 10000
         self.viewer = None
 
-    def step(self, action):
 
+    def step(self, action):
 
         self.game.execute_play(self.current_agent, action)
         
@@ -150,8 +150,8 @@ class BackgammonEnv(gym.Env):
 
 class BackgammonEnvPixel(BackgammonEnv):
 
-    def __init__(self):
-        super(BackgammonEnvPixel, self).__init__()
+    def __init__(self, render_mode=None):
+        super().__init__(render_mode)
         self.observation_space = Box(low=0, high=255, shape=(STATE_H, STATE_W, 3), dtype=np.uint8)
 
     def step(self, action):
