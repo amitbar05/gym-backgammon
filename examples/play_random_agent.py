@@ -30,8 +30,6 @@ def make_plays():
     agents = {WHITE: RandomAgent(WHITE), BLACK: RandomAgent(BLACK)}
 
     observation, game_info = env.reset(return_info=True)
-    print("hello debug")
-    print("observation = ", observation)
     first_roll = game_info["roll"]
 
     agent = agents[game_info["agent_color"]]
