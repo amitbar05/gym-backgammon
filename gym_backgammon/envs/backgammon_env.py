@@ -77,7 +77,7 @@ class BackgammonEnv(gym.Env):
 
     def _get_obs(self):
         # returns the current representation of the board.
-        self.game.get_board_features(self.game.get_opponent(self.current_agent))
+        return np.array(self.game.get_board_features(self.game.get_opponent(self.current_agent)) , dtype=np.float32)
 
 
     def _get_info(self):
