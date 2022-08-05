@@ -124,12 +124,12 @@ class BackgammonEnv(gym.Env):
             if self.viewer is None:
                 self.viewer = Viewer(SCREEN_W, SCREEN_H)
 
-            if mode == 'rgb_array':
+            if self.render_mode == 'rgb_array':
                 width = SCREEN_W
                 height = SCREEN_H
 
             else:
-                assert mode == 'state_pixels', print(mode)
+                assert self.render_mode == 'state_pixels', print(self.render_mode)
                 width = STATE_W
                 height = STATE_H
 
