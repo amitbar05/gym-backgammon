@@ -12,7 +12,8 @@ SCREEN_H = 500
 
 
 class BackgammonEnv(gym.Env):
-    metadata = {'render_modes': ['human', 'rgb_array', 'state_pixels']}
+    metadata = {'render_modes': ['human', 'rgb_array', 'state_pixels'],
+                'render_fps': 4}
 
     def __init__(self, render_mode=None):
         assert render_mode is None or render_mode in self.metadata["render_modes"]
