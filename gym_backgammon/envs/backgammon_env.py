@@ -85,9 +85,9 @@ class BackgammonEnv(gym.Env):
         return {"agent_color": self.current_agent, "roll": self.roll}
 
 
-    def reset(self, seed=None, return_info=False, options=None):
+    def reset(self, return_info=False, options=None):
         # We need the following line to seed self.np_random
-        super().reset(seed=seed)
+        super().reset()
         
         # returns a two random integers at a range [start, end]
         def double_dice(start, end):
